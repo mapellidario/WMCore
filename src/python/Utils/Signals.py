@@ -8,7 +8,7 @@ Description: This module provide set of hooks to running program
 The dumpthreads callback function will be called every time when
 running program will receive SIGUSR1 signal. E.g., in unix shell
 just do
-shell# kill -s SIGUSR1 <pid>
+shell# kill -s SIGUSR1 `<pid>`
 """
 from __future__ import print_function, division
 
