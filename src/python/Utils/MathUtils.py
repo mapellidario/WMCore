@@ -4,6 +4,7 @@ Module containing mathematical and physics utils
 """
 from __future__ import division, print_function
 
+from builtins import int
 from past.builtins import basestring
 from math import ceil
 
@@ -20,7 +21,7 @@ def quantize(inputVal, quanta):
         msg = "Input value has to be either int or float, not %s" % (type(inputVal))
         raise ValueError(msg)
 
-    if isinstance(quanta, (basestring, float, int)):
+    if isinstance(quanta, (basestring, int, float)):
         quanta = int(float(quanta))
     elif not isinstance(quanta, int):
         msg = "Quanta value has to be either int or float, not %s" % (type(quanta))

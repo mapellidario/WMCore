@@ -3,8 +3,7 @@ EmailAlert - send alerts via email
 """
 
 from __future__ import division
-from builtins import str
-from builtins import object
+from builtins import str, object
 import smtplib
 import logging
 

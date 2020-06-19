@@ -1,12 +1,11 @@
 #! /usr/bin/env python
 from __future__ import division, print_function
 
-from builtins import str
-from builtins import map
+from future.utils import iteritems
+from builtins import str, map
 from past.builtins import basestring
 import collections
-from itertools import islice
-from itertools import chain
+from itertools import islice, chain
 
 def grouper(iterable, n):
     """
@@ -33,7 +32,7 @@ def nestedDictUpdate(d, u):
     Code from Alex Matelli
     http://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth
     """
-    for k, v in u.items():
+    for k, v in iteritems(u):
         if isinstance(v, collections.Mapping):
             r = nestedDictUpdate(d.get(k, {}), v)
             d[k] = r
@@ -49,7 +48,7 @@ def convertFromUnicodeToStr(data):
     if isinstance(data, basestring):
         return str(data)
     elif isinstance(data, collections.Mapping):
-        return dict(list(map(convertFromUnicodeToStr, iter(data.items()))))
+        return dict(list(map(convertFromUnicodeToStr, iteritems(data))))
     elif isinstance(data, collections.Iterable):
         return type(data)(list(map(convertFromUnicodeToStr, data)))
     else:
