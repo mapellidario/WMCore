@@ -12,7 +12,7 @@ import re
 import shutil
 import threading
 import time
-import urllib2
+import urllib.request
 from contextlib import closing
 from Utils.Timers import timeFunction
 from WMComponent.JobCreator.CreateWorkArea import getMasterName
@@ -1020,8 +1020,8 @@ class CleanCouchPoller(BaseWorkerThread):
         logging.debug("Going to upload this payload %s", data)
 
         try:
-            request = urllib2.Request(dashBoardUrl, data, headers)
-            with closing(urllib2.urlopen(request)) as response:
+            request = urllib.request.Request(dashBoardUrl, data, headers)
+            with closing(urllib.request.urlopen(request)) as response:
                 if response.code != 200:
                     logging.info("Something went wrong while uploading to DashBoard, response code %d", response.code)
                     return False
