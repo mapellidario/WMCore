@@ -5,7 +5,9 @@ and PhEDEx. It also prints any discrepancy between those 2 data management tools
 """
 from __future__ import print_function, division
 
-import httplib
+from future import standard_library
+standard_library.install_aliases()
+import http.client
 import json
 import os
 import sys
@@ -29,7 +31,7 @@ class HTTPSClientAuthHandler(urllib2.HTTPSHandler):
         return self.do_open(self.getConnection, req)
 
     def getConnection(self, host, timeout=300):
-        return httplib.HTTPSConnection(host, key_file=self.key, cert_file=self.cert)
+        return http.client.HTTPSConnection(host, key_file=self.key, cert_file=self.cert)
 
 
 def get_content(url, params=None):

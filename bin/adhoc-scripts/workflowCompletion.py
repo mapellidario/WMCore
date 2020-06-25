@@ -5,8 +5,10 @@ completion, so the ration of input lumis vs output lumis.
 """
 from __future__ import print_function, division
 
+from future import standard_library
+standard_library.install_aliases()
 import argparse
-import httplib
+import http.client
 import json
 import os
 import pwd
@@ -36,7 +38,7 @@ class HTTPSClientAuthHandler(urllib2.HTTPSHandler):
         return self.do_open(self.getConnection, req)
 
     def getConnection(self, host, timeout=290):
-        return httplib.HTTPSConnection(host, key_file=self.key, cert_file=self.cert)
+        return http.client.HTTPSConnection(host, key_file=self.key, cert_file=self.cert)
 
 
 def getX509():
