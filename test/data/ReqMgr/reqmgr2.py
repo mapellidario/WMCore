@@ -16,13 +16,16 @@ Note: tests for checking data directly in CouchDB in ReqMgr1 test script:
 """
 from __future__ import print_function
 
+from future import standard_library
+standard_library.install_aliases()
+
 import json
 import logging
 import os
 import sys
 import urllib
 from argparse import ArgumentParser
-from httplib import HTTPSConnection, HTTPConnection
+from http.client import HTTPSConnection, HTTPConnection
 
 
 class RESTClient(object):
