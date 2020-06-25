@@ -10,6 +10,9 @@ NOT A THREAD SAFE CLASS.
 """
 from __future__ import print_function, division
 
+from future import standard_library
+standard_library.install_aliases()
+
 import base64
 import hashlib
 import logging
@@ -18,7 +21,7 @@ import time
 import traceback
 import urllib
 from datetime import datetime
-from httplib import HTTPException
+from http.client import HTTPException
 
 from Utils.IteratorTools import grouper, nestedDictUpdate
 from WMCore.Services.Requests import JSONRequests

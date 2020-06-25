@@ -1,7 +1,10 @@
 """
 Perform cleanup actions
 """
-import httplib
+from future import standard_library
+standard_library.install_aliases()
+
+import http.client
 import json
 import logging
 import os.path
@@ -955,7 +958,7 @@ class CleanCouchPoller(BaseWorkerThread):
         dqmHost = regExpResult.group(1)
         dqmPath = regExpResult.group(2)
 
-        connection = httplib.HTTPSConnection(dqmHost, 443, hostKey, hostCert)
+        connection = http.client.HTTPSConnection(dqmHost, 443, hostKey, hostCert)
         try:
             connection.request('GET', dqmPath)
             response = connection.getresponse()

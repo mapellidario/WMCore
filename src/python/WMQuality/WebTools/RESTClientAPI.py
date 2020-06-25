@@ -1,13 +1,13 @@
+from future import standard_library
+standard_library.install_aliases()
+
 import hashlib
 import hmac
 import urllib
-from httplib import HTTPConnection
 
-try:
-    from urlparse import urlparse
-except ImportError:
-    # PY3
-    from urllib.parse import urlparse
+from http.client import HTTPConnection
+from urllib.parse import urlparse
+
 from WMCore.WebTools.Page import make_rfc_timestamp
 
 
