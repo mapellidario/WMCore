@@ -3,7 +3,6 @@ from __future__ import division, print_function
 
 from future.utils import viewitems
 from builtins import str, map
-from past.builtins import basestring
 import collections
 from itertools import islice, chain
 
@@ -40,16 +39,16 @@ def nestedDictUpdate(d, u):
             d[k] = u[k]
     return d
 
-def convertFromUnicodeToStr(data):
+def convertFromUnicodeToBytes(data):
     """
     code fram
     http://stackoverflow.com/questions/1254454/fastest-way-to-convert-a-dicts-keys-values-from-unicode-to-str
     """
-    if isinstance(data, basestring):
-        return str(data)
+    if isinstance(data, str):
+        return data.encode('utf-8')
     elif isinstance(data, collections.Mapping):
-        return dict(list(map(convertFromUnicodeToStr, iteritems(data))))
+        return dict(list(map(convertFromUnicodeToBytes, viewitems(data))))
     elif isinstance(data, collections.Iterable):
-        return type(data)(list(map(convertFromUnicodeToStr, data)))
+        return type(data)(list(map(convertFromUnicodeToBytes, data)))
     else:
         return data
