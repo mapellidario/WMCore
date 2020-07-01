@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 from __future__ import division, print_function
 
-from future.utils import iteritems
+from future.utils import viewitems
 from builtins import str, map
 from past.builtins import basestring
 import collections
@@ -32,7 +32,7 @@ def nestedDictUpdate(d, u):
     Code from Alex Matelli
     http://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth
     """
-    for k, v in iteritems(u):
+    for k, v in viewitems(u):
         if isinstance(v, collections.Mapping):
             r = nestedDictUpdate(d.get(k, {}), v)
             d[k] = r

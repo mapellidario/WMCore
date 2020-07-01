@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 from __future__ import division, print_function
-from future.utils import iteritems
+from future.utils import viewitems
 
 from builtins import str
 from past.builtins import basestring
@@ -21,7 +21,7 @@ def lowerCmsHeaders(headers):
     code check only cms headers in lower case, e.g. cms-xxx-yyy.
     """
     lheaders = {}
-    for hkey, hval in iteritems(headers): # perform lower-case
+    for hkey, hval in viewitems(headers): # perform lower-case
         # lower header keys since we check lower-case in headers
         if hkey.startswith('Cms-') or hkey.startswith('CMS-'):
             lheaders[hkey.lower()] = hval
