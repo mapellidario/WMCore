@@ -142,7 +142,7 @@ class UnpackUserTarballTest(unittest.TestCase):
         """
 
         sys.argv = ['scriptName','http://home.fnal.gov/~ewv/not-there.txt','']
-        self.assertRaises((RuntimeError, urllib.error.HTTPError), UnpackUserTarball)
+        self.assertRaises(urllib.error.HTTPError, UnpackUserTarball)
 
 
     def testFileAndURLSandbox(self):
