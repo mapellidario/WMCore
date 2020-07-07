@@ -38,6 +38,12 @@ for row in data:
 """
 from __future__ import print_function
 
+from future import standard_library
+standard_library.install_aliases()
+
+from builtins import str, range, object
+from past.builtins import basestring
+from future.utils import viewitems
 
 # system modules
 import httplib
@@ -54,7 +60,6 @@ try:
 except ImportError:
     # PY3
     from urllib.parse import urlencode
-
 
 class ResponseHeader(object):
     """ResponseHeader parses HTTP response header"""
@@ -217,7 +222,7 @@ class RequestHandler(object):
         curl.setopt(pycurl.URL, str(url))
         if headers:
             curl.setopt(pycurl.HTTPHEADER, \
-                    ["%s: %s" % (k, v) for k, v in headers.items()])
+                    ["%s: %s" % (k, v) for k, v in viewitems(headers)])
         bbuf = BytesIO()
         hbuf = BytesIO()
         curl.setopt(pycurl.WRITEFUNCTION, bbuf.write)
@@ -414,14 +419,14 @@ def getdata(urls, ckey, cert, headers=None, options=None, num_conn=50, cookie=No
     for _ in range(num_conn):
         curl = pycurl.Curl()
         curl.fp = None
-        for key, val in options.items():
+        for key, val in viewitems(options):
             curl.setopt(getattr(pycurl, key), val)
         curl.setopt(pycurl.SSLKEY, ckey)
         curl.setopt(pycurl.SSLCERT, cert)
         mcurl.handles.append(curl)
         if headers:
             curl.setopt(pycurl.HTTPHEADER, \
-                        ["%s: %s" % (k, v) for k, v in headers.items()])
+                        ["%s: %s" % (k, v) for k, v in viewitems(headers)])
 
     # Main loop
     freelist = mcurl.handles[:]
