@@ -140,23 +140,33 @@ class RESTTest(RESTBaseUnitTest):
 
     def testException(self):
         """
+        testException
+
         list takes a single integer argument, querying with a string
         """
         url = self.urlbase + 'list?int=a'
         self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, url)
-        # urllib2,urlopen raise the error but not urllib.urlopen
+        try:
+            urllib.request.urlopen(url)
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 400)
+            self.assertEqual(e.reason, u'Bad Request')
+            self.assertEqual(e.msg, u'Bad Request')
+            exception_data = json.loads(e.read())
+            self.assertEqual(exception_data['type'], 'HTTPError')
+            self.assertEqual(exception_data['message'], 'Invalid input: Input arguments failed sanitation.')
+
         url = self.urlbase + 'list1?int=a'
-        expected_data = {"exception": 400, "type": "HTTPError", "message": "Invalid input: Arguments added where none allowed"}
-        urllib_data = urllib.request.urlopen(url)
-        if self.do_production:
-            #production mode returns 403 error
-            self.assertEqual(urllib_data.getcode(), 403)
-        else:
-            response_data = urllib_data.read()
-            response_data = json.loads(response_data)
-            self.assertEqual(response_data['type'], expected_data['type'])
-            self.assertEqual(response_data['message'], expected_data['message'])
-            self.assertEqual(urllib_data.getcode(), 400)
+        self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, url)
+        try:
+            urllib.request.urlopen(url)
+        except urllib.error.HTTPError as e:
+            self.assertEqual(e.code, 400)
+            self.assertEqual(e.reason, u'Bad Request')
+            self.assertEqual(e.msg, u'Bad Request')
+            exception_data = json.loads(e.read())
+            self.assertEqual(exception_data['type'], 'HTTPError')
+            self.assertEqual(exception_data['message'], 'Invalid input: Arguments added where none allowed')
 
     def testList(self):
         verb ='GET'
