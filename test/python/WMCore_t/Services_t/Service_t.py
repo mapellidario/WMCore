@@ -12,8 +12,7 @@ import socket
 import tempfile
 import time
 import unittest
-from http.client import BadStatusLine, IncompleteRead
-from http.client import HTTPException
+from http.client import BadStatusLine, IncompleteRead, HTTPException
 
 import cherrypy
 from nose.plugins.attrib import attr
