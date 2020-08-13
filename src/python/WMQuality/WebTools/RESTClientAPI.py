@@ -6,7 +6,6 @@ import hmac
 import urllib.parse
 
 from http.client import HTTPConnection
-from urllib.parse import urlparse
 
 from WMCore.WebTools.Page import make_rfc_timestamp
 
@@ -37,7 +36,7 @@ def makeRequest(url, values=None, verb='GET', accept="text/plain",
         else:
             # for other encoding scheme values assumed to be encoded already
             data = values
-    parser = urlparse(url)
+    parser = urllib.parse.urlparse(url)
     uri = parser.path
     if parser.query:
         uri += "?" + parser.query

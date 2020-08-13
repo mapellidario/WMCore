@@ -15,7 +15,7 @@ import sys
 import tempfile
 import urllib
 
-    from urllib.parse import urlsplit
+from urllib.parse import urlsplit
 
 from couchapp.commands import push as couchapppush
 from couchapp.config import Config
