@@ -4,6 +4,8 @@ Perform cleanup actions
 from future import standard_library
 standard_library.install_aliases()
 
+import future.moves.urllib.request
+
 import http.client
 import json
 import logging
@@ -12,8 +14,8 @@ import re
 import shutil
 import threading
 import time
-import urllib.request
 from contextlib import closing
+
 from Utils.Timers import timeFunction
 from WMComponent.JobCreator.CreateWorkArea import getMasterName
 from WMComponent.JobCreator.JobCreatorPoller import retrieveWMSpec
@@ -1020,8 +1022,8 @@ class CleanCouchPoller(BaseWorkerThread):
         logging.debug("Going to upload this payload %s", data)
 
         try:
-            request = urllib.request.Request(dashBoardUrl, data, headers)
-            with closing(urllib.request.urlopen(request)) as response:
+            request = future.moves.urllib.request.Request(dashBoardUrl, data, headers)
+            with closing(future.moves.urllib.request.urlopen(request)) as response:
                 if response.code != 200:
                     logging.info("Something went wrong while uploading to DashBoard, response code %d", response.code)
                     return False
