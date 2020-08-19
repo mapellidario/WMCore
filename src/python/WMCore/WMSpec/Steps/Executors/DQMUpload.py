@@ -6,16 +6,13 @@ Implementation of an Executor for a DQMUpload step
 
 """
 from __future__ import print_function
-
 from future import standard_library
 standard_library.install_aliases()
-
-import future.moves.urllib.request
 
 import logging
 import os
 import sys
-import urllib.error
+import urllib.request, urllib.error
 from io import BytesIO
 from functools import reduce
 from gzip import GzipFile
@@ -243,11 +240,11 @@ class DQMUpload(Executor):
         logging.info(msg)
 
         handler = HTTPSAuthHandler(key=uploadProxy, cert=uploadProxy)
-        opener = future.moves.urllib.request.OpenerDirector()
+        opener = urllib.request.OpenerDirector()
         opener.add_handler(handler)
 
         # setup the request object
-        datareq = future.moves.urllib.request.Request(url + '/data/put')
+        datareq = urllib.request.Request(url + '/data/put')
         datareq.add_header('Accept-encoding', 'gzip')
         datareq.add_header('User-agent', ident)
         self.marshall(args, {'file': filename}, datareq)
@@ -255,7 +252,7 @@ class DQMUpload(Executor):
         if 'https://' in url:
             result = opener.open(datareq)
         else:
-            opener.add_handler(future.moves.urllib.request.ProxyHandler({}))
+            opener.add_handler(urllib.request.ProxyHandler({}))
             result = opener.open(datareq)
 
         data = result.read()

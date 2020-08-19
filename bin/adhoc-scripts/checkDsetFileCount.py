@@ -6,13 +6,12 @@ and PhEDEx. It also prints any discrepancy between those 2 data management tools
 from __future__ import print_function, division
 from future import standard_library
 standard_library.install_aliases()
-import future.moves.urllib.request
 
 import http.client
 import json
 import os
 import sys
-import urllib.parse
+import urllib.request, urllib.parse
 from urllib.error import HTTPError, URLError
 from argparse import ArgumentParser
 
@@ -21,9 +20,9 @@ phedex_url = main_url + "/phedex/datasvc/json/prod/"
 dbs_url = main_url + "/dbs/prod/global/DBSReader/"
 
 
-class HTTPSClientAuthHandler(future.moves.urllib.request.HTTPSHandler):
+class HTTPSClientAuthHandler(urllib.request.HTTPSHandler):
     def __init__(self):
-        future.moves.urllib.request.HTTPSHandler.__init__(self)
+        urllib.request.HTTPSHandler.__init__(self)
         self.key = os.getenv("X509_USER_PROXY")
         self.cert = os.getenv("X509_USER_PROXY")
 
@@ -35,7 +34,7 @@ class HTTPSClientAuthHandler(future.moves.urllib.request.HTTPSHandler):
 
 
 def get_content(url, params=None):
-    opener = future.moves.urllib.request.build_opener(HTTPSClientAuthHandler())
+    opener = urllib.request.build_opener(HTTPSClientAuthHandler())
     try:
         if params:
             response = opener.open(url, params)

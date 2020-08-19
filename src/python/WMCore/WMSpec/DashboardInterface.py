@@ -11,13 +11,12 @@ of the job and the report.
 from __future__ import print_function
 from future import standard_library
 standard_library.install_aliases()
-import future.moves.urllib.request
 
 from xml.dom import minidom
 import logging
 import traceback
 
-import urllib.parse
+import urllib.request, urllib.parse
 import os
 import socket
 from contextlib import closing
@@ -63,9 +62,9 @@ def HTTPpost(params, url, onFailureFile = None):
         data = urllib.parse.urlencode(params)
         #put who we are in headers
         headers = { 'User-Agent' : USER_AGENT }
-        req = future.moves.urllib.request.Request(url, data, headers)
+        req = urllib.request.Request(url, data, headers)
 
-        with closing(future.moves.urllib.request.urlopen(req, data)) as response:
+        with closing(urllib.request.urlopen(req, data)) as response:
             logging.debug("received http code: %s, message: %s, response: %s", response.code,
                           response.msg, str(response.read()))
 

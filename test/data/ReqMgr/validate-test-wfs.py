@@ -3,7 +3,6 @@ from __future__ import print_function
 
 from future import standard_library
 standard_library.install_aliases()
-import future.moves.urllib.request
 
 import argparse
 import http.client
@@ -11,7 +10,7 @@ import json
 import os
 import pwd
 import sys
-import urllib.parse
+import urllib.request, urllib.parse
 from urllib.error import HTTPError, URLError
 import re
 from textwrap import TextWrapper
@@ -29,13 +28,13 @@ CLIENT_ID = 'validate-test-wfs/1.2::python/%s.%s' % sys.version_info[:2]
 cachedDqmgui = None
 
 
-class HTTPSClientAuthHandler(future.moves.urllib.request.HTTPSHandler):
+class HTTPSClientAuthHandler(urllib.request.HTTPSHandler):
     """
     Basic HTTPS class
     """
 
     def __init__(self, key, cert):
-        future.moves.urllib.request.HTTPSHandler.__init__(self)
+        urllib.request.HTTPSHandler.__init__(self)
         self.key = key
         self.cert = cert
 
@@ -63,7 +62,7 @@ def getContent(url, params=None):
     cert = getX509()
     client = '%s (%s)' % (CLIENT_ID, os.environ.get('USER', ''))
     handler = HTTPSClientAuthHandler(cert, cert)
-    opener = future.moves.urllib.request.build_opener(handler)
+    opener = urllib.request.build_opener(handler)
     opener.addheaders = [("User-Agent", client),
                          ("Accept", "application/json")]
     try:

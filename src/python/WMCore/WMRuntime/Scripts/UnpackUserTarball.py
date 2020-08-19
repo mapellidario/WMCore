@@ -5,11 +5,8 @@ _UnpackUserTarball_
 Unpack the user tarball and put it's contents in the right place
 """
 from __future__ import print_function
-
 from future import standard_library
 standard_library.install_aliases()
-
-import future.moves.urllib.request
 
 import logging
 import os
@@ -19,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 
+import urllib.request
 from urllib.parse import urlsplit
 from subprocess import getstatusoutput
 
@@ -59,10 +57,10 @@ def getRetriever(scheme):
         certfile = None
 
     if scheme == 'http' or not certfile:
-        retriever = future.moves.urllib.request.urlretrieve
+        retriever = urllib.request.urlretrieve
     else:
         logging.info("Using %s as X509 certificate", certfile)
-        op = future.moves.urllib.request.URLopener(None, key_file=certfile, cert_file=certfile)
+        op = urllib.request.URLopener(None, key_file=certfile, cert_file=certfile)
         op.addheader('Accept', 'application/octet-stream')
         retriever = op.retrieve
 

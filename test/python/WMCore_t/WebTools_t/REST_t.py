@@ -9,11 +9,10 @@ TODO: duplicate all direct call tests to ones that use HTTP
 
 from future import standard_library
 standard_library.install_aliases()
-import future.moves.urllib.request
 
 import unittest
 import logging
-import urllib.error
+import urllib.request, urllib.error
 import json
 
 from cherrypy import HTTPError
@@ -146,9 +145,9 @@ class RESTTest(RESTBaseUnitTest):
         list takes a single integer argument, querying with a string
         """
         url = self.urlbase + 'list?int=a'
-        self.assertRaises(urllib.error.HTTPError, future.moves.urllib.request.urlopen, url)
+        self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, url)
         try:
-            future.moves.urllib.request.urlopen(url)
+            urllib.request.urlopen(url)
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 400)
             self.assertEqual(e.reason, u'Bad Request')
@@ -158,9 +157,9 @@ class RESTTest(RESTBaseUnitTest):
             self.assertEqual(exception_data['message'], 'Invalid input: Input arguments failed sanitation.')
 
         url = self.urlbase + 'list1?int=a'
-        self.assertRaises(urllib.error.HTTPError, future.moves.urllib.request.urlopen, url)
+        self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, url)
         try:
-            future.moves.urllib.request.urlopen(url)
+            urllib.request.urlopen(url)
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 400)
             self.assertEqual(e.reason, u'Bad Request')
@@ -380,7 +379,7 @@ class RESTTest(RESTBaseUnitTest):
     def testAuthentication(self):
         verb ='PUT'
         url = self.urlbase + 'list1'
-        urllib_data = future.moves.urllib.request.urlopen(url)
+        urllib_data = urllib.request.urlopen(url)
         self.assertEqual(urllib_data.getcode(), 403)
 
         # pass proper role
