@@ -6,6 +6,10 @@ Implementation of an Executor for a DQMUpload step
 
 """
 from __future__ import print_function
+from builtins import str
+
+from future import standard_library
+standard_library.install_aliases()
 
 from future.utils import viewitems
 
@@ -229,7 +233,7 @@ class DQMUpload(Executor):
         Perform a file upload to the dqm server using HTTPS auth with the
         service proxy provided
         """
-        ident = "WMAgent python/%d.%d.%d" % sys.version_info[:3]
+        ident = str("WMAgent python/%d.%d.%d" % sys.version_info[:3])
         uploadProxy = self.step.upload.proxy or os.environ.get('X509_USER_PROXY', None)
         logging.info("Using proxy file: %s", uploadProxy)
         logging.info("Using CA certificate path: %s", os.environ.get('X509_CERT_DIR'))
