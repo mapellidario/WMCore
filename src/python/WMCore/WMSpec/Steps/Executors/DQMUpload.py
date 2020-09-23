@@ -231,7 +231,7 @@ class DQMUpload(Executor):
         Perform a file upload to the dqm server using HTTPS auth with the
         service proxy provided
         """
-        ident = str("WMAgent python/%d.%d.%d" % sys.version_info[:3])
+        ident = "WMAgent python/%d.%d.%d" % sys.version_info[:3]
         uploadProxy = self.step.upload.proxy or os.environ.get('X509_USER_PROXY', None)
         logging.info("Using proxy file: %s", uploadProxy)
         logging.info("Using CA certificate path: %s", os.environ.get('X509_CERT_DIR'))
@@ -250,6 +250,11 @@ class DQMUpload(Executor):
         datareq.add_header('Accept-encoding', 'gzip')
         datareq.add_header('User-agent', ident)
         self.marshall(args, {'file': filename}, datareq)
+
+        for header in datareq.header_items():
+            logging.info("[9926] header %s %s", header, type(header[1]))
+        logging.info("[9926] Request data type: %s", type(datareq.data))
+        logging.info("[9926] Request data: %s %s", datareq.data)
 
         if 'https://' in url:
             result = opener.open(datareq)
