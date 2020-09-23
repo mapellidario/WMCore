@@ -6,7 +6,6 @@ Implementation of an Executor for a DQMUpload step
 
 """
 from __future__ import print_function
-from builtins import str
 
 from future import standard_library
 standard_library.install_aliases()
