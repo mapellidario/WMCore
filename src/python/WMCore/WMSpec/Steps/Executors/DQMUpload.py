@@ -255,7 +255,7 @@ class DQMUpload(Executor):
         for header in datareq.header_items():
             logging.info("[9926] header %s %s", header, type(header[1]))
         logging.info("[9926] Request data type: %s", type(datareq.data))
-        logging.info("[9926] Request data: %s %s", datareq.data)
+        logging.info("[9926] Request data: %s", datareq.data)
 
         if 'https://' in url:
             result = opener.open(datareq)
