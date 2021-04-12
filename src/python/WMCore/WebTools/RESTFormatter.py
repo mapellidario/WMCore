@@ -17,6 +17,8 @@ from cherrypy import response, HTTPError, request
 
 from WMCore.WebTools.Page import TemplatedPage, _setCherryPyHeaders
 from WMCore.Wrappers.JsonWrapper.JSONThunker import JSONThunker
+from Utils.Utilities import encodeUnicodeToBytes
+
 
 class RESTFormatter(TemplatedPage):
     def __init__(self, config):
@@ -74,7 +76,8 @@ class RESTFormatter(TemplatedPage):
         # testSupportedFormat (WMCore_t.WebTools_t.RESTFormat_t.RESTFormatTest)
         # fails with "ValueError: Page handlers MUST return bytes. 
         # Use tools.encode if you wish to return unicode."
-        return bytes(str(data), "utf-8")
+        return encodeUnicodeToBytes(str(data), 'ignore')
+
 
     def format(self, data, datatype, expires):
         response_data = ''

@@ -2,6 +2,8 @@ from builtins import str, bytes
 from past.builtins import basestring
 
 from WMCore.REST.Error import *
+from Utils.Utilities import encodeUnicodeToBytes
+
 import math
 import re
 import numbers
@@ -35,7 +37,7 @@ def _check_str(argname, val, rx, custom_err = None):
     """
     if isinstance(val, str):
         try:
-            val = bytes(val, "utf-8")
+            val = encodeUnicodeToBytes(val, 'ignore')
         except:
             raise InvalidParameter(return_message("Invalid '%s' parameter %s %s" % (argname, val, type(val)), custom_err))
     if not isinstance(val, basestring) or not rx.match(val):
