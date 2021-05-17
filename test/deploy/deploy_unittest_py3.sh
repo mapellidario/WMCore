@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 ###
 # usage
 # deploy current version of wmagent external library and use the dmwm/master WMCore code to set up unittest
