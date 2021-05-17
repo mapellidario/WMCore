@@ -28,7 +28,8 @@ deploy_agent() {
     curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/env_unittest_py3.sh > env_unittest_py3.sh
     curl -s https://raw.githubusercontent.com/dmwm/WMCore/master/test/deploy/WMAgent_unittest.secrets > WMAgent_unittest.secrets
     source ./init_py3.sh
-    $PWD/deployment/Deploy -R wmagentpy3-dev@$1 -r comp=comp -t $1 -A $DMWM_ARCH -s 'prep sw post' $INSTALL_DIR admin/devtools wmagentpy3
+    /home/dmwm/ContainerScripts/Deploy -R wmagentpy3-dev@$1 -r comp=comp -t $1 -A $DMWM_ARCH -s 'prep sw post' $INSTALL_DIR admin/devtools wmagentpy3
+    # $PWD/deployment/Deploy -R wmagentpy3-dev@$1 -r comp=comp -t $1 -A $DMWM_ARCH -s 'prep sw post' $INSTALL_DIR admin/devtools wmagentpy3
 }
 
 setup_test_src() {
