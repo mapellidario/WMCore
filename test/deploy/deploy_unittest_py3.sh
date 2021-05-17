@@ -13,7 +13,7 @@
 # for running the test check the tutorial, https://github.com/dmwm/WMCore/wiki/Setup-wmcore-unittest
 ###
 DMWM_ARCH=slc7_amd64_gcc630
-VERSION=$(curl -s "http://cmsrep.cern.ch/cgi-bin/repos/comp/$DMWM_ARCH?C=M;O=D" | grep -oP "(?<=>cms\+wmagent-dev\+).*(?=-1-1)" | head -1)
+VERSION=$(curl -s "http://cmsrep.cern.ch/cgi-bin/repos/comp/$DMWM_ARCH?C=M;O=D" | grep -oP "(?<=>cms\+wmagentpy3-dev\+).*(?=-1-1)" | head -1)
 
 REPOSITORY=dmwm
 BRANCH=
@@ -22,11 +22,11 @@ UPDATE=false
 deploy_agent() {
 
     git clone https://github.com/dmwm/deployment.git
-    curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/init_py3.sh > init.sh
-    curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/env_unittest_py3.sh > env_unittest.sh
+    curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/init_py3.sh > init_py3.sh
+    curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/env_unittest_py3.sh > env_unittest_py3.sh
     curl -s https://raw.githubusercontent.com/dmwm/WMCore/master/test/deploy/WMAgent_unittest.secrets > WMAgent_unittest.secrets
-    source ./init.sh
-    $PWD/deployment/Deploy -R wmagent-dev@$1 -r comp=comp -t $1 -A $DMWM_ARCH -s 'prep sw post' $INSTALL_DIR admin/devtools wmagent
+    source ./init_py3.sh
+    $PWD/deployment/Deploy -R wmagentpy3-dev@$1 -r comp=comp -t $1 -A $DMWM_ARCH -s 'prep sw post' $INSTALL_DIR admin/devtools wmagentpy3
 }
 
 setup_test_src() {
@@ -64,7 +64,7 @@ done
 
 if [ $UPDATE = "true" ]
 then
-    source ./env_unittest.sh
+    source ./env_unittest_py3.sh
     update_src $REPOSITORY $BRANCH
 else
     echo "--- deploying agent $VERSION"
@@ -75,7 +75,7 @@ else
     setup_test_src $REPOSITORY $BRANCH
 
     # swap the source code from deployed one test source
-    source ./env_unittest.sh
+    source ./env_unittest_py3.sh
     $manage start-services
 
     mysql -u unittestagent --password=passwd --sock $INSTALL_DIR/current/install/mysql/logs/mysql.sock --exec "create database wmcore_unittest"
