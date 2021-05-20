@@ -43,7 +43,7 @@ export config=$INSTALL_DIR/current/config/wmagentpy3
 export manage=$config/manage
 
 source $INSTALL_DIR/current/apps/wmagentpy3/etc/profile.d/init.sh
-source $INSTALL_DIR/current/apps/wmcore-devtools/etc/profile.d/init.sh
+source $INSTALL_DIR/current/apps/wmcorepy3-devtools/etc/profile.d/init.sh
 
 export PYTHONPATH=$TEST_SRC/../test/python:$PYTHONPATH
 
