@@ -25,16 +25,17 @@ deploy_agent() {
 
     git clone https://github.com/dmwm/deployment.git
     # FIXME
-    curl https://patch-diff.githubusercontent.com/raw/dmwm/deployment/pull/1053.patch | patch -d deployment/ -p 1
-
+    # curl https://patch-diff.githubusercontent.com/raw/dmwm/deployment/pull/1053.patch | patch -d deployment/ -p 1
+    # FIXME
     curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/init_py3.sh > init_py3.sh
+    # FIXME
     curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/env_unittest_py3.sh > env_unittest_py3.sh
+
     curl -s https://raw.githubusercontent.com/dmwm/WMCore/master/test/deploy/WMAgent_unittest.secrets > WMAgent_unittest.secrets
     source ./init_py3.sh
     # set -e
     for step in prep sw post; do
         echo -e "\n*** Deploying WMAgent py3: running $step step ***"
-        # ./Deploy               -R ${RPM_NAME}@$WMA_TAG -s $step -A $WMA_ARCH -r $REPO -t v$WMA_TAG $DEPLOY_DIR ${RPM_NAME}
         $PWD/deployment/Deploy -R wmagentpy3-dev@$1    -r comp=comp -t $1 -A $DMWM_ARCH -s $step $INSTALL_DIR wmagentpy3/devtools
         if [ $? -ne 0 ]; then
             ls $INSTALL_DIR
