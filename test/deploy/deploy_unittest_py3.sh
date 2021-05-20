@@ -23,7 +23,8 @@ UPDATE=false
 
 deploy_agent() {
 
-    git clone https://github.com/dmwm/deployment.git
+    # git clone https://github.com/dmwm/deployment.git
+    git clone -b wmagentpy3-devtools https://github.com/amaltaro/deployment.git
     curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/init_py3.sh > init_py3.sh
     curl -s https://raw.githubusercontent.com/mapellidario/WMCore/10487-fix/test/deploy/env_unittest_py3.sh > env_unittest_py3.sh
     curl -s https://raw.githubusercontent.com/dmwm/WMCore/master/test/deploy/WMAgent_unittest.secrets > WMAgent_unittest.secrets
