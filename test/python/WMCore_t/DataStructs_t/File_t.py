@@ -38,8 +38,8 @@ class FileTest(unittest.TestCase):
         self.assertEqual(testFile['size'], 0)
         self.assertEqual(testFile['events'], 0)
         self.assertEqual(testFile['checksums'], {})
-        self.assertItemsEqual(testFile['parents'], {})
-        self.assertItemsEqual(testFile['locations'], {})
+        self.assertCountEqual(testFile['parents'], {}) if PY3 else self.assertItemsEqual(testFile['parents'], {})
+        self.assertCountEqual(testFile['locations'], {}) if PY3 else self.assertItemsEqual(testFile['locations'], {})
         self.assertFalse(testFile['merged'])
 
         param = {"lfn": "my_lfn",
@@ -55,9 +55,9 @@ class FileTest(unittest.TestCase):
         self.assertEqual(testFile['lfn'], param['lfn'])
         self.assertEqual(testFile['size'], param['size'])
         self.assertEqual(testFile['events'], param['events'])
-        self.assertItemsEqual(testFile['checksums'], param['checksums'])
+        self.assertCountEqual(testFile['checksums'], param['checksums']) if PY3 else self.assertItemsEqual(testFile['checksums'], param['checksums'])
         self.assertEqual(testFile['parents'], param['parents'])
-        self.assertItemsEqual(testFile['locations'], param['locations'])
+        self.assertCountEqual(testFile['locations'], param['locations']) if PY3 else self.assertItemsEqual(testFile['locations'], param['locations'])
         self.assertTrue(testFile['merged'])
 
         return
@@ -142,19 +142,19 @@ class FileTest(unittest.TestCase):
         Test the `setLocation` method functionality
         """
         testFile = File(lfn="test_file")
-        self.assertItemsEqual(testFile['locations'], {})
+        self.assertCountEqual(testFile['locations'], {}) if PY3 else self.assertItemsEqual(testFile['locations'], {})
 
         testFile.setLocation(None)
-        self.assertItemsEqual(testFile['locations'], {})
+        self.assertCountEqual(testFile['locations'], {}) if PY3 else self.assertItemsEqual(testFile['locations'], {})
 
         testFile.setLocation("")
-        self.assertItemsEqual(testFile['locations'], {})
+        self.assertCountEqual(testFile['locations'], {}) if PY3 else self.assertItemsEqual(testFile['locations'], {})
 
         testFile.setLocation([])
-        self.assertItemsEqual(testFile['locations'], {})
+        self.assertCountEqual(testFile['locations'], {}) if PY3 else self.assertItemsEqual(testFile['locations'], {})
 
         testFile.setLocation("valid_PNN")
-        self.assertItemsEqual(testFile['locations'], {"valid_PNN"})
+        self.assertCountEqual(testFile['locations'], {"valid_PNN"}) if PY3 else self.assertItemsEqual(testFile['locations'], {"valid_PNN"})
 
 
 if __name__ == '__main__':
