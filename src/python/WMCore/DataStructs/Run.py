@@ -70,12 +70,10 @@ class Run(WMObject):
 
     def _lt_py2(self, rhs):
         """
-        Compare on run # first, then by lumis as a list, then by events in each lumi
+        Compare on run # first, then by lumis as a list is compared
         """
-        # check run number
         if self.run != rhs.run:
             return self.run < rhs.run
-        # if same run number, check list of lumi sections
         if sorted(self.eventsPerLumi.keys()) != sorted(rhs.eventsPerLumi.keys()):
             return sorted(self.eventsPerLumi.keys()) < sorted(rhs.eventsPerLumi.keys())
         return self.eventsPerLumi < rhs.eventsPerLumi
