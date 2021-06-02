@@ -47,7 +47,7 @@ class Run(WMObject):
     def __ne__(self, rhs):
         return not self.__eq__(rhs)
 
-    def __lt__(self, rhs):
+    def _lt_py3(self, rhs):
         """
         Compare on run # first, then by lumis as a list, then by events in each lumi
         """
@@ -67,6 +67,21 @@ class Run(WMObject):
         # same events in each lumi section:
         # then the runs are equal and __lt__ should return false
         return False
+
+    def _lt_py2(self, rhs):
+        """
+        Compare on run # first, then by lumis as a list, then by events in each lumi
+        """
+        # check run number
+        if self.run != rhs.run:
+            return self.run < rhs.run
+        # if same run number, check list of lumi sections
+        if sorted(self.eventsPerLumi.keys()) != sorted(rhs.eventsPerLumi.keys()):
+            return sorted(self.eventsPerLumi.keys()) < sorted(rhs.eventsPerLumi.keys())
+        return self.eventsPerLumi < rhs.eventsPerLumi
+
+    def __lt__(self, rhs):
+        return self._lt_py3(rhs)
 
     def __le__(self, other):
         return self.__lt__(other) or self.__eq__(other)

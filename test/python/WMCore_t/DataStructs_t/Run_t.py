@@ -7,9 +7,11 @@ Unittest for the WMCore.DataStructs.Run class
 """
 
 import unittest
+import random
+import timeit
 from nose.plugins.attrib import attr
 
-
+from Utils.PythonVersion import PY2
 from WMCore.DataStructs.Run import Run
 
 
@@ -178,16 +180,19 @@ class RunTest(unittest.TestCase):
         """
         comparison performance
         """
-        def cmp_runs(run_x, run_y):
-            return [
-                run_x < run_y, run_x <= run_y,
-                run_x == run_y, run_x != run_y,
-                run_x > run_y, run_x >= run_y,]
-        
-        run0 = Run(666, [(1, 11), (2, 22), (3, 33)])
-        run1 = Run(666, [(1, 11), (2, 22), (3, 34)])
-        self.assertListEqual(cmp_runs(run0, run1),
-                             [True, True, False, True, False, False])
+        l1, l2 = [], []
+        for _ in range(int(3e5)):
+            lumi = random.randrange(1,int(1e9))
+            l1.append((lumi, random.randrange(1,int(1e9))))
+            l2.append((lumi, random.randrange(1,int(1e9))))
+        run0 = Run(666, l1)
+        run1 = Run(666, l2)
+        t = timeit.timeit(lambda: run0._lt_py3(run1), number=10)
+        print("_lt_py3", t) # seconds for "number" repetitions
+        if PY2:
+            t = timeit.timeit(lambda: run0._lt_py2(run1), number=10)
+            print("_lt_py2", t) # seconds for "number" repetitions
+        raise Exception
 
     def testD(self):
         """
