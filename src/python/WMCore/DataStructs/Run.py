@@ -8,7 +8,7 @@ container representing a run, and its constituent lumi sections and event counts
 
 from __future__ import print_function
 
-from future.utils import viewitems, listitems
+from future.utils import viewitems, listitems, iteritems
 
 from WMCore.DataStructs.WMObject import WMObject
 
