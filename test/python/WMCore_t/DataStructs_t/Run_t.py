@@ -7,6 +7,8 @@ Unittest for the WMCore.DataStructs.Run class
 """
 
 import unittest
+from nose.plugins.attrib import attr
+
 
 from WMCore.DataStructs.Run import Run
 
@@ -169,6 +171,22 @@ class RunTest(unittest.TestCase):
         self.assertListEqual(cmp_runs(run20, run25),
                              [False, False, False, True, True, True])
         self.assertListEqual(cmp_runs(run20, run26),
+                             [True, True, False, True, False, False])
+
+    @attr("integration")
+    def testC1(self):
+        """
+        comparison performance
+        """
+        def cmp_runs(run_x, run_y):
+            return [
+                run_x < run_y, run_x <= run_y,
+                run_x == run_y, run_x != run_y,
+                run_x > run_y, run_x >= run_y,]
+        
+        run0 = Run(666, [(1, 11), (2, 22), (3, 33)])
+        run1 = Run(666, [(1, 11), (2, 22), (3, 34)])
+        self.assertListEqual(cmp_runs(run0, run1),
                              [True, True, False, True, False, False])
 
     def testD(self):
