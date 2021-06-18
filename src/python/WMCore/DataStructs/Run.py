@@ -8,7 +8,12 @@ container representing a run, and its constituent lumi sections and event counts
 
 from __future__ import print_function
 
+from builtins import str as newstr, bytes as newbytes
 from future.utils import viewitems, listitems
+import hashlib
+
+from Utils.PythonVersion import PY2, PY3
+from Utils.Utilities import encodeUnicodeToBytesConditional
 
 from WMCore.DataStructs.WMObject import WMObject
 
@@ -143,8 +148,19 @@ class Run(WMObject):
         """
         Calculate the value of the hash
         """
-        value = self.run.__hash__()
-        value += hash(frozenset(listitems(self.eventsPerLumi)))  # Hash that represents the dictionary
+        # value = self.run.__hash__()
+        # value += hash(frozenset(listitems(self.eventsPerLumi)))
+        if isinstance(self.run, (newstr, newbytes)):
+            value = encodeUnicodeToBytesConditional(self.run, condition=PY3)
+        else:
+            value = encodeUnicodeToBytesConditional(str(self.run), condition=PY3)
+        if PY2:
+            value.replace('L', '')
+        value = int(hashlib.sha1(value).hexdigest()[:8], 36)
+        frozenEvents = encodeUnicodeToBytesConditional(str(sorted(listitems(self.eventsPerLumi), key=lambda x: x[0])), condition=PY3)
+        if PY2:
+            frozenEvents = frozenEvents.replace('L', '')
+        value += int(hashlib.sha1(frozenEvents).hexdigest()[:8], 36)
         return value
 
     @property
