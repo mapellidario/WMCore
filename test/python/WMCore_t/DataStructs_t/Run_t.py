@@ -7,6 +7,7 @@ Unittest for the WMCore.DataStructs.Run class
 """
 
 import unittest
+from Utils.PythonVersion import PY2, PY3
 
 from WMCore.DataStructs.Run import Run
 
@@ -201,6 +202,30 @@ class RunTest(unittest.TestCase):
         s.add(run10)
         s.add(run11)
 
+    def testRunHash(self):
+        run1 = Run(1, 1, 2, 3)
+        self.assertEqual(hash(run1), 651310213912)
+        run666 = Run(666, [(1, 11), (2, 23), (3, 32)])
+        self.assertEqual(hash(run666), 1783057051846)
+        if PY2:
+            from past.builtins import long
+            run666 = Run(long(666), [(long(1), 11), (2, long(23)), (3, 32)])
+            self.assertTrue(isinstance(run666.run, long))
+            self.assertTrue(isinstance(run666.eventsPerLumi[1], int))
+            self.assertTrue(isinstance(run666.eventsPerLumi[2], long))
+            self.assertTrue(isinstance(run666.eventsPerLumi[3], int))
+
+        if PY3:
+            runHuge = Run(1234567890123456789012345678901234567890, [(1, 11), (2, 23), (3, 32)])
+        else:
+            from past.builtins import long
+            runHuge = Run(long(1234567890123456789012345678901234567890), [(1, 11), (2, 23), (3, 32)])
+        self.assertEqual(hash(runHuge), 1767690338157)
+
+        # import timeit
+        # t = timeit.timeit(lambda: hash(run1), number=100000)
+        # print(t)
+        # raise Exception
 
 if __name__ == '__main__':
     unittest.main()
