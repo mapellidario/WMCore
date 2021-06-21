@@ -71,6 +71,7 @@ class WMWorkloadHelper(PersistencyHelper):
 
     def setSpecUrl(self, url):
         self.data.persistency.specUrl = sanitizeURL(url)["url"]
+        print("DM debug - wmworkload setspecurl", self.data.persistency.specUrl)
 
     def specUrl(self):
         """

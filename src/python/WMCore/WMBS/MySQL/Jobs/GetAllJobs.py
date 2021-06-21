@@ -72,4 +72,5 @@ class GetAllJobs(DBFormatter):
                                               conn=conn, transaction=transaction)
 
         res = self.format(result)
+        print("DM debug - getalljobs", res)
         return res

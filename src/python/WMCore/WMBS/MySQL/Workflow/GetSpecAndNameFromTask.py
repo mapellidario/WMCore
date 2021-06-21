@@ -40,7 +40,11 @@ class GetSpecAndNameFromTask(DBFormatter):
         result = self.dbi.processData(self.sql, binds, conn = conn,
                                       transaction = transaction)
 
+        print("DM debug - entry", result[0])
+
         unsortedResult = self.formatDict(result)
+
+        print("DM debug - entry", unsortedResult)
 
         sortedResult = {}
         for entry in unsortedResult:

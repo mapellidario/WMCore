@@ -62,6 +62,7 @@ def discardConflictingDocument(couchDbInstance, data, result):
 
 def getDataFromSpecFile(specFile):
     workload = WMWorkloadHelper()
+    print("DM debug - getDataFromSpecFile", specFile)
     workload.load(specFile)
     campaign = workload.getCampaign()
     result = {"Campaign": campaign}
@@ -174,6 +175,7 @@ class ChangeState(WMObject, WMConnectionBase):
             logging.exception("Error complementing created job information: %s", str(ex))
 
         # 5. Document the state transition in couch
+        print("DM debug - propagate ", newstate)
         try:
             self.recordInCouch(jobs, newstate, oldstate, updatesummary)
         except UnicodeDecodeError as ex:

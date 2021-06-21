@@ -331,6 +331,7 @@ class JobSubmitterTest(EmulatedUnitTestCase):
         """
         workload = self.createTestWorkload()
         config = self.getConfig()
+        print("DM debug - config", config)
         changeState = ChangeState(config)
 
         nSubs = 2
@@ -340,6 +341,8 @@ class JobSubmitterTest(EmulatedUnitTestCase):
         self.setResourceThresholds(site, pendingSlots=50, runningSlots=100, tasks=['Processing', 'Merge'],
                                    Processing={'pendingSlots': 50, 'runningSlots': 100},
                                    Merge={'pendingSlots': 50, 'runningSlots': 100})
+
+        print("DM debug - workloadspecpath", self.workloadSpecPath)
 
         jobGroupList = self.createJobGroups(nSubs=nSubs, nJobs=nJobs,
                                             task=workload.getTask("ReReco"),
@@ -361,6 +364,7 @@ class JobSubmitterTest(EmulatedUnitTestCase):
         self.assertEqual(len(result), 0)
         result = getJobsAction.execute(state='Executing', jobType="Processing")
         self.assertEqual(len(result), nSubs * nJobs)
+        raise Exception
 
         # Check assigned locations
         getLocationAction = self.daoFactory(classname="Jobs.GetLocation")
@@ -900,6 +904,7 @@ class JobSubmitterTest(EmulatedUnitTestCase):
         jobSubmitter.algorithm()
 
         result = getJobsAction.execute(state='Executing', jobType="Processing")
+        print(len(result), result)
         self.assertEqual(len(result), 10)
 
         myResourceControl.changeSiteState(site, 'Draining')

@@ -84,6 +84,7 @@ class SandboxCreator(object):
         pileupCachePath = "%s/pileupCache" % buildItHere
         path = "%s/%s/WMSandbox" % (buildItHere, workloadName)
         workloadFile = os.path.join(path, "WMWorkload.pkl")
+        print("DM debug - makesandbox", workloadFile)
         archivePath = os.path.join(buildItHere, "%s/%s-Sandbox.tar.bz2" % (workloadName, workloadName))
         # check if already built
         if os.path.exists(archivePath) and os.path.exists(workloadFile):
@@ -91,6 +92,7 @@ class SandboxCreator(object):
             return archivePath
         if os.path.exists(path):
             shutil.rmtree(path)
+        print("DM debug - makesandbox2", os.path.exists(workloadFile))
         # //
         # // Set up Fetcher plugins, use default list for maintaining
         # //  compatibility
@@ -140,6 +142,7 @@ class SandboxCreator(object):
         # pickle up the workload for storage in the sandbox
         workload.setSpecUrl(workloadFile)
         workload.save(workloadFile)
+        print("DM debug - makesandbox2", workloadFile, os.path.exists(workloadFile))
 
         # now, tar everything up and put it somewhere special
 

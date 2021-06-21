@@ -15,6 +15,8 @@ from future.moves.urllib.request import urlopen, Request
 
 from builtins import object
 
+import os
+
 try:
     import cPickle as pickle
 except ImportError:
@@ -61,16 +63,23 @@ class PersistencyHelper(object):
         # if there are more things to filter may be separate the load function
 
         # urllib2 needs a scheme - assume local file if none given
+        print("DM debug - persistency load - filename", filename)
+        print("DM debug - persistency ", os.path.exists(filename))
         if not urlparse(filename)[0]:
+            print("DM debug - A")
             filename = 'file:' + filename
             handle = urlopen(Request(filename, headers={"Accept": "*/*"}))
+            print("DM debug - handle", handle)
             self.data = pickle.load(handle)
+            print("DM debug - self.data - if", self.data)
             handle.close()
         elif filename.startswith('file:'):
+            print("DM debug - B")
             handle = urlopen(Request(filename, headers={"Accept": "*/*"}))
             self.data = pickle.load(handle)
             handle.close()
         else:
+            print("DM debug - C")
             # use own request class so we get authentication if needed
             from WMCore.Services.Requests import Requests
             request = Requests(filename)

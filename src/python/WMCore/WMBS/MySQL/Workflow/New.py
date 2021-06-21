@@ -17,6 +17,7 @@ class New(DBFormatter):
     def execute(self, spec = None, owner = None, name = None, task = None,
                 wfType = None, alt_fs_close = False, priority = None,
                 conn = None, transaction = False):
+        print("DM debug - workflow new", spec)
         binds = {"spec": spec, "owner": owner, "name": name, "task": task,
                  "type": wfType, "alt_fs_close": int(alt_fs_close), "priority" : priority}
         self.dbi.processData(self.sql, binds, conn = conn, transaction = transaction)
