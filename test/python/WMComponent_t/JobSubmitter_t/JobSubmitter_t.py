@@ -313,7 +313,7 @@ class JobSubmitterTest(EmulatedUnitTestCase):
         Creates a test workload for us to run on, hold the basic necessities.
         """
 
-        workload = testWorkload()
+        workload = testWorkload(name=name)
 
         taskMaker = TaskMaker(workload, os.path.join(self.testDir, name))
         taskMaker.skipSubscription = True

@@ -16,13 +16,13 @@ class TestWorkloadFactory(object):
 
     Stamp out test workfloads.
     """
-    def createWorkload(self):
+    def createWorkload(self, name="TestWorkload"):
         """
         _createWorkload_
 
         Create a new workload.
         """
-        workload = newWorkload("TestWorkload")
+        workload = newWorkload(name)
         workload.setOwner("sfoulkes@fnal.gov")
         workload.setStartPolicy("DatasetBlock", SliceType = "NumberOfFiles", SliceSize = 1)
         workload.setEndPolicy("SingleShot")
@@ -119,7 +119,7 @@ class TestWorkloadFactory(object):
                                         mergedLFNBase = "/store/temp/WMAgent/merged")
         return
 
-    def __call__(self, emulation = False):
+    def __call__(self, name="TestWorkload", emulation=False):
         """
         _call_
 
@@ -127,7 +127,7 @@ class TestWorkloadFactory(object):
         """
         self.emulation = emulation
 
-        workload = self.createWorkload()
+        workload = self.createWorkload(name)
         procTask = workload.newTask("ReReco")
 
         self.setupProcessingTask(procTask)
@@ -136,14 +136,14 @@ class TestWorkloadFactory(object):
         self.addOutputModule(procTask, "TestOutputModule", "RECO", "SomeFilter")
         return workload
 
-def testWorkload(emulation = False):
+def testWorkload(name="TestWorkload", emulation=False):
     """
     _testWorkflow_
 
     Instantiate the TestWorkloadFactory and create a workload.
     """
     myTestWorkloadFactory = TestWorkloadFactory()
-    return myTestWorkloadFactory(emulation = emulation)
+    return myTestWorkloadFactory(name=name, emulation=emulation)
 
 if __name__ == "__main__":
     testWorkload()
