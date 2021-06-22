@@ -239,6 +239,7 @@ class Report(object):
 
             jsonStep["start"] = stepTimes["startTime"]
             jsonStep["stop"] = stepTimes["stopTime"]
+            print("DM debug - report __to_json__", jsonStep["stop"], stepTimes["stopTime"])
 
             jsonStep["performance"] = self.jsonizePerformance(reportStep.performance)
 
@@ -396,9 +397,11 @@ class Report(object):
         if PY3:
             with open(filename, 'rb') as handle:
                 self.data = decodeBytesToUnicode(pickle.load(handle))
+                # print("DM debug - self.data", self.data)
         else:
             with open(filename, 'r') as handle:
                 self.data = pickle.load(handle)
+                # print("DM debug - self.data", self.data)
 
         # old self.report (if it existed) became unattached
         if reportname:

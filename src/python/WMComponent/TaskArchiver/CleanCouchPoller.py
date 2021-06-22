@@ -642,6 +642,7 @@ class CleanCouchPoller(BaseWorkerThread):
                     logs = err['value']['logs']
                     start = err['value']['start']
                     stop = err['value']['stop']
+                    print("DM debug", start, stop, stop-start)
                     errorSite = str(err['value']['site'])
                     retry = err['value']['retry']
                     if lastRegisteredRetry is None or lastRegisteredRetry != retry:

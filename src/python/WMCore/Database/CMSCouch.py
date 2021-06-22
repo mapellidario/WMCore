@@ -553,6 +553,11 @@ class Database(CouchDBRequests):
             raise RuntimeError("Error in CouchDB: viewError '%s' reason '%s'" % \
                                (retval['error'], retval['reason']))
         else:
+            try:
+                print("DM debug - retval", self.name, design, view)
+                print("DM debug - retval", retval.get('rows')[0]['value']['start'], retval.get('rows')[0]['value']['stop'])
+            except:
+                pass
             return retval
 
     def loadList(self, design, list, view, options=None, keys=None):
