@@ -293,6 +293,10 @@ class Database(CouchDBRequests):
         uri = '/%s/_bulk_docs/' % self.name
 
         data['docs'] = list(self._queue)
+        try:
+            print("DM debug - cmscouch commit",  data['docs'][0]["fwjr"]["steps"]["cmsRun1"]["start"], data['docs'][0]["fwjr"]["steps"]["cmsRun1"]["stop"])
+        except:
+            pass
         retval = self.post(uri, data)
         self._reset_queue()
         for v in viewlist:
@@ -554,8 +558,8 @@ class Database(CouchDBRequests):
                                (retval['error'], retval['reason']))
         else:
             try:
-                print("DM debug - retval", self.name, design, view)
                 print("DM debug - retval", retval.get('rows')[0]['value']['start'], retval.get('rows')[0]['value']['stop'])
+                print("DM debug - retval", self.name, design, view, keys, encodedOptions)
             except:
                 pass
             return retval
