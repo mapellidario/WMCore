@@ -9,6 +9,9 @@ import urllib.parse
 
 from http.client import HTTPConnection
 
+from Utils.Utilities import decodeBytesToUnicodeConditional, encodeUnicodeToBytesConditional
+from Utils.PythonVersion import PY3
+
 from WMCore.WebTools.Page import make_rfc_timestamp
 
 
@@ -73,10 +76,12 @@ def methodTest(verb, url, request_input={}, accept='text/json', contentType=None
                                                      accept, contentType,
                                                      secure, secureParam)
 
+    data = decodeBytesToUnicodeConditional(data, condition=PY3)
+
     keyMap = {'code': code, 'data': data, 'type': content_type, 'response': response}
     for key, value in viewitems(output):
         msg = 'Got a return %s != %s (got %s, type %s) (expected %s, type %s)' \
-              % (keyMap[key], value, keyMap[key], type(keyMap[key]), data, type(data))
+              % (keyMap[key], value, keyMap[key], type(keyMap[key]), value, type(value))
         assert keyMap[key] == value, msg
 
     expires = response.getheader('Expires')
