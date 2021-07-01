@@ -54,5 +54,7 @@ class DQMUpload_t(unittest.TestCase):
             args,
             filename)
 
+        raise Exception
+
 if __name__ == '__main__':
     unittest.main()

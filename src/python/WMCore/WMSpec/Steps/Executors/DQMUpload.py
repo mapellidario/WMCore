@@ -197,7 +197,9 @@ class DQMUpload(Executor):
         boundary = '----------=_DQM_FILE_BOUNDARY_=-----------'
         (body, crlf) = ('', '\r\n')
         for (key, value) in viewitems(args):
+            logging.debug("DM debug - encode value - %s, %s", type(value), value)
             payload = str(value)
+            logging.debug("DM debug - encode payload - %s, %s", type(payload), payload)
             body += '--' + boundary + crlf
             body += ('Content-Disposition: form-data; name="%s"' % key) + crlf
             body += crlf + payload + crlf
@@ -207,6 +209,7 @@ class DQMUpload(Executor):
                      % (key, os.path.basename(filename))) + crlf
             body += ('Content-Type: %s' % self.filetype(filename)) + crlf
             body += ('Content-Length: %d' % os.path.getsize(filename)) + crlf
+            logging.debug("DM debug - encode body (no rootfile) -%s, %s", type(body), body)
             with open(filename, "r") as fd:
                 body += crlf + fd.read() + crlf
             body += '--' + boundary + '--' + crlf + crlf
@@ -252,6 +255,12 @@ class DQMUpload(Executor):
         datareq.add_header('User-agent', ident)
         self.marshall(args, {'file': filename}, datareq)
 
+        logging.debug("DM debug - datareq %s", str(dir(datareq)))
+        logging.debug("DM debug - datareq %s", str(datareq.header_items()))
+        logging.debug("DM debug - datareq %s %s", str(type(datareq.data)), len(datareq.data))
+
+        # /home/dmwm/unittestdeploy/wmagent/1.4.9.pre6/sw/slc7_amd64_gcc630/external/python/2.7.13-comp2/lib/python2.7/
+
         if 'https://' in url:
             result = opener.open(datareq)
         else:
@@ -259,6 +268,10 @@ class DQMUpload(Executor):
             result = opener.open(datareq)
 
         data = result.read()
+        logging.debug("DM debug - result - %s %s", type(result),result)
+        logging.debug("DM debug - result - %s %s", type(result.getheaders()), result.getheaders())
+        logging.debug("DM debug - result - %s %s", type(result.getheader('Content-encoding', '')), result.getheader('Content-encoding', ''))
+        logging.debug("DM debug - result - %s %s", type(result.headers),result.headers)
         if result.headers.get('Content-encoding', '') == 'gzip':
             data = GzipFile(fileobj=BytesIO(data)).read()
 
