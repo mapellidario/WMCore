@@ -112,6 +112,7 @@ class TemplatedPage(Page):
         You should use cgi.escape to escape data going into the template if you are unsure
         of it's provenance.
         """
+        print("DM debug - tempaltepage", file)
         searchList = []
         if len(args) > 0:
             searchList.append(args)

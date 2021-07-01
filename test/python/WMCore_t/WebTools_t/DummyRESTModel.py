@@ -133,6 +133,7 @@ class DummyRESTModel(RESTModel):
 
     def list3(self, *args, **kwargs):
         """ test sanitise without any validation specified """
+        print("DM debug - espose list")
         return kwargs
 
     def listTypeArgs(self, aList):
@@ -187,7 +188,7 @@ class DummyRESTModel(RESTModel):
     def val_4(self, request_input):
         # Checks the str is 'abc'
         try:
-            assert request_input['input_str'] == 'abc'
+            assert request_input['input_str'] == b'abc'
         except AssertionError:
             raise HTTPError(400, 'val_4 failed: %s != "abc"' % request_input['input_str'])
 

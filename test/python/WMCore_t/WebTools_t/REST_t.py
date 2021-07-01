@@ -146,12 +146,15 @@ class RESTTest(RESTBaseUnitTest):
         """
         url = self.urlbase + 'list?int=a'
         self.assertRaises(urllib.error.HTTPError, urllib.request.urlopen, url)
+        print("DM debug", url)
         try:
             urllib.request.urlopen(url)
         except urllib.error.HTTPError as e:
             self.assertEqual(e.code, 400)
             self.assertEqual(e.reason, u'Bad Request')
             self.assertEqual(e.msg, u'Bad Request')
+            print("DM debug", e.read())
+            raise Exception
             exception_data = json.loads(e.read())
             self.assertEqual(exception_data['type'], 'HTTPError')
             self.assertEqual(exception_data['message'], 'Invalid input: Input arguments failed sanitation.')
