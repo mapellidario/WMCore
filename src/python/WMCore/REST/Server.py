@@ -2095,6 +2095,13 @@ class DatabaseRESTApi(RESTApi):
         trace = request.db["handle"]["trace"]
         request.db["last_bind"] = (binds, kwbinds)
         trace and cherrypy.log("%s execute: %s %s" % (trace, binds, kwbinds))
+        # Debug crabserver https://github.com/dmwm/CRABServer/issues/6880 - start
+        for k, v in viewitems(kwbinds):
+            if not isinstance(v, (int, str, type(None))):
+                cherrypy.log("%s execute debug. field: %s, type: %s, content: %s" %(trace, k, type(v), v))
+                import datetime
+                raise Exception("%s Unexpected variable type about to be inserted into the DB. field: %s, type: %s, content: %s" % (datetime.datetime.now(), k, type(v), v))
+        # Debug crabserver https://github.com/dmwm/CRABServer/issues/6880 - end
         if request.db['type'].__name__ == 'MySQLdb':
             return c, c.execute(sql, kwbinds)
         return c, c.execute(None, *binds, **kwbinds)
@@ -2113,6 +2120,14 @@ class DatabaseRESTApi(RESTApi):
         trace = request.db["handle"]["trace"]
         request.db["last_bind"] = (binds, kwbinds)
         trace and cherrypy.log("%s executemany: %s %s" % (trace, binds, kwbinds))
+        # Debug crabserver https://github.com/dmwm/CRABServer/issues/6880 - start
+        for q in binds[0]:
+            for k, v in viewitems(q):
+                if not isinstance(v, (int, str, type(None))):
+                    cherrypy.log("%s executemany debug: field: %s, type: %s, content: %s" %(trace, k, type(v), v))
+                    import datetime
+                    raise Exception("%s Unexpected variable type about to be inserted into the DB. field: %s, type %s, content %s" % (datetime.datetime.now(), k, type(v), v))
+        # Debug crabserver https://github.com/dmwm/CRABServer/issues/6880 - end
         if request.db['type'].__name__ == 'MySQLdb':
             return c, c.executemany(sql, binds[0])
         return c, c.executemany(None, *binds, **kwbinds)
