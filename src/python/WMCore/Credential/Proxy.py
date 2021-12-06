@@ -260,8 +260,9 @@ class Proxy(Credential):
         2.  from an ui
         """
         if serverRenewer:
-            proxyFilename = os.path.join(self.credServerPath, sha1(
-                self.userDN + self.vo + self.group + self.role).hexdigest())
+            uniqName = self.userDN + self.vo + self.group + self.role
+            proxyFilename = os.path.join(self.credServerPath,
+                                         sha1(uniqName.encode('utf-8')).hexdigest())
         elif 'X509_USER_PROXY' in os.environ:
             proxyFilename = os.environ['X509_USER_PROXY']
         else:
@@ -621,8 +622,9 @@ class Proxy(Credential):
         cmdList.append('X509_USER_KEY=%s' % self.serverKey)
 
         ## get a new delegated proxy
+        uniqName = self.userDN + self.vo + self.group + self.role
         proxyFilename = os.path.join(self.credServerPath,
-                                     sha1(self.userDN + self.vo + self.group + self.role).hexdigest())
+                                     sha1(uniqName.encode('utf-8')).hexdigest())
         # Note that this is saved in a temporary file with the pid appended to the filename. This way we will avoid adding many
         # signatures later on with vomsExtensionRenewal in case of multiple processing running at the same time
         tmpProxyFilename = proxyFilename + '.' + str(os.getpid())
