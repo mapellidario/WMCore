@@ -1353,6 +1353,9 @@ class DBConnectionPool(Thread):
 
         sigready.acquire()
         now = time.time()
+        self.connection_wait_time = random.randint(10, 60)
+        cherrypy.log("DB CONNECTION RAND WAIT TIME: timeout=%d"
+                     % (self.connection_wait_time))
         until = now + self.connection_wait_time
         while True:
             dbh = arg["handle"]
