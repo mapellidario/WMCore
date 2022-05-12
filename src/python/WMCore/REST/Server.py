@@ -1442,9 +1442,9 @@ class DBConnectionPool(Thread):
 
     def _status(self, *args):
         """Action handler to dump the queue status."""
-        cherrypy.log("DATABASE CONNECTIONS: %s@%s %s: timeout=%d inuse=%d idle=%d"
+        cherrypy.log("DATABASE CONNECTIONS: %s@%s %s: timeout=%d inuse=%d idle=%d queue=%d"
                      % (self.dbspec["user"], self.dbspec["dsn"], self.id,
-                        self.dbspec["timeout"], len(self.inuse), len(self.idle)))
+                        self.dbspec["timeout"], len(self.inuse), len(self.idle), len(self.queue)))
 
     def _error(self, title, rest, err, where):
         """Internal helper to generate error message somewhat similar to
@@ -1469,9 +1469,9 @@ class DBConnectionPool(Thread):
 
         # If tracing, issue log line that identifies this connection series.
         trace = s["trace"] and ("RESTSQL:" + "".join(random.sample(string.ascii_letters, 12)))
-        trace and cherrypy.log("%s ENTER %s@%s %s (%s) inuse=%d idle=%d" %
+        trace and cherrypy.log("%s ENTER %s@%s %s (%s) inuse=%d idle=%d queue=%d" %
                                (trace, s["user"], s["dsn"], self.id, req["id"],
-                                len(self.inuse), len(self.idle)))
+                                len(self.inuse), len(self.idle), len(self.queue)))
 
         # Attempt to connect max_tries times.
         for _ in range(0, self.max_tries):
@@ -1614,9 +1614,9 @@ class DBConnectionPool(Thread):
             # the number of connections in use to the minimum.
             dbh["expires"] = time.time() + s["timeout"]
             self.idle.append(dbh)
-            trace and cherrypy.log("%s RELEASED %s@%s timeout=%d inuse=%d idle=%d"
+            trace and cherrypy.log("%s RELEASED %s@%s timeout=%d inuse=%d idle=%d queue=%d"
                                    % (trace, s["user"], s["dsn"], s["timeout"],
-                                      len(self.inuse), len(self.idle)))
+                                      len(self.inuse), len(self.idle), len(self.queue)))
         except Exception as e:
             # Something went wrong, nuke the connection from orbit.
             self._error("RELEASE", " failed to release connection", e, format_exc())
@@ -1656,9 +1656,9 @@ class DBConnectionPool(Thread):
             dbh["connection"] = None
 
             # Note trace that this is now gone.
-            trace and cherrypy.log("%s DISCONNECTED %s@%s timeout=%d inuse=%d idle=%d"
+            trace and cherrypy.log("%s DISCONNECTED %s@%s timeout=%d inuse=%d idle=%d queue=%d"
                                    % (trace, s["user"], s["dsn"], s["timeout"],
-                                      len(self.inuse), len(self.idle)))
+                                      len(self.inuse), len(self.idle), len(self.queue)))
         except Exception as e:
             self._error("DISCONNECT", " (ignored)", e, format_exc())
 
