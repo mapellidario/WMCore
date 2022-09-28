@@ -213,6 +213,7 @@ class Scram(object):
         self.architecture = options.get("architecture", None)
         self.test_mode = options.get("test", False)
         self.envCmd = options.get("envCmd", None)
+        self.startEnvCmd = options.get("startEnvCmd", None)
 
         # state checks
         self.projectArea = None
@@ -370,6 +371,9 @@ class Scram(object):
                                 stderr=subprocess.STDOUT,
                                 stdin=subprocess.PIPE,
                                 )
+
+        if self.startEnvCmd is not None:
+            self.procWriter(proc, "%s\n" % self.startEnvCmd)
 
         # Passing the environment in to the subprocess call results in all of
         # the variables being quoted which causes problems for search paths.
