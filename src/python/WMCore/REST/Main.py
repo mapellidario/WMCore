@@ -399,9 +399,10 @@ class RESTDaemon(RESTMain):
             # Redirect all output to the logging daemon.
             devnull = open(os.devnull, "w")
             if isinstance(self.logfile, list):
-                subproc = Popen(self.logfile, stdin=PIPE, stdout=devnull, stderr=devnull,
-                                bufsize=0, close_fds=True, shell=False)
-                logger = subproc.stdin
+                # subproc = Popen(self.logfile, stdin=PIPE, stdout=devnull, stderr=devnull,
+                #                 bufsize=0, close_fds=True, shell=False)
+                # logger = subproc.stdin
+                logger = sys.stdout
             elif isinstance(self.logfile, str):
                 logger = open(self.logfile, "a+", 0)
             else:
