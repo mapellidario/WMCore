@@ -66,6 +66,14 @@ SANDBOX=$1
 INDEX=$2
 RETRY_NUM=$3
 
+echo "======= DARIOM DEBUG - PRINT PILOT ENV - START ===="
+declare -p
+echo "======= DARIOM DEBUG - PRINT PILOT ENV - END ======"
+## X509_USER_PROXY=/srv/myproxy.pem
+echo "======= DARIOM DEBUG - ls -l /srv - START ===="
+ls -l /srv
+echo "======= DARIOM DEBUG - ls -l /srv - END ======"
+
 export JOBSTARTDIR=$PWD
 
 if [ "X$_CONDOR_JOB_AD" != "X" ];
@@ -235,6 +243,9 @@ for i in `env`; do
   echo "  $i"
 done
 echo -e "======== Current environment dump finished ========\n"
+echo "======= DARIOM DEBUG - PRINT PROXY INFO - START ===="
+voms-proxy-info --all
+echo "======= DARIOM DEBUG - PRINT PROXY INFO - END ======"
 
 echo "======== WMAgent Run the job starting at $(TZ=GMT date) ========"
 $pythonCommand Startup.py
